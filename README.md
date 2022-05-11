@@ -1,4 +1,4 @@
-#Blox vs Craft Lua Script
+# Blox_vs_Craft_Script
 
 These are my collections of Roblox Lua Scripting for my game called "Blox vs Craft".
 
