@@ -1,0 +1,63 @@
+local timerSpawnLength = 20
+local timerGameLength = 20
+local roundLength = 10
+local intermissionLength = 10
+local InRound = game.ReplicatedStorage.InRound
+local Status = game.ReplicatedStorage.Status
+local Gui = game.ReplicatedStorage.Gui
+local LobbySpawn = game.Workspace.LobbySpawn
+
+InRound.Changed:Connect(function()
+	if InRound.Value == false then
+		for i, v in pairs(game.Teams["Craft"]:GetPlayers()) do
+			local char = v.Character
+			char.HumanoidRootPart.CFrame = LobbySpawn.CFrame
+		end
+		for i, v in pairs(game.Teams["Blox"]:GetPlayers()) do
+			local char = v.Character
+			char.HumanoidRootPart.CFrame = LobbySpawn.CFrame
+		end	
+	end
+end)
+
+local function roundTimer()
+	while wait() do
+		for i = timerSpawnLength, 11, -1 do
+			InRound.Value = false
+			Gui.Value = false
+			wait(1)
+			Status.Value = i
+		end
+		for i = intermissionLength, 0, -1 do
+			InRound.Value = false
+			Gui.Value = false
+			wait(1)
+			Status.Value = "Intermission: ".. i .." seconds left"
+		end
+		for i = timerGameLength, 10, -1 do
+			InRound.Value = true
+			Gui.Value = true
+			wait(1)
+			Status.Value = "Choosing Team: ".. i-10 .." seconds left"
+		end
+		for i = timerGameLength, 11, -1 do
+			InRound.Value = true
+			Gui.Value = false
+			wait(1)
+			Status.Value = i
+		end
+		for i = roundLength, 0, -1 do
+			InRound.Value = true
+			Gui.Value = false
+			wait(1)
+			Status.Value = "Game: ".. i .." seconds left!"
+		end
+	end
+end
+
+spawn(roundTimer)
+
+game.ReplicatedStorage.ChooseTeam.OnServerEvent:Connect(function(player,teamcolor)
+	player.TeamColor = teamcolor
+	player:LoadCharacter()
+end)
