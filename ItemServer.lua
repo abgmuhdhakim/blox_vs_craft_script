@@ -1,3 +1,4 @@
+--Variable
 local RS = game:GetService('ReplicatedStorage')
 local RemoteEvent = RS:WaitForChild('ToolEvent')
 
